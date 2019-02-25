@@ -4,11 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CheckoutOrderTotal.UnitTest
 {
     [TestClass]
-    public class UnitTest1
+    public class TestTests
     {
         [TestMethod]
         public void TestMethod1()
         {
+            var test = new Test();
+
+            var result = test.TestString();
+
+            Assert.AreEqual("1", result);
         }
     }
 }
