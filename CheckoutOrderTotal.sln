@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckoutOrderTotal.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckoutOrderTotal", "CheckoutOrderTotal\CheckoutOrderTotal.csproj", "{7F558BF8-891A-4316-B99F-DBE3AA10D2E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckoutOrderAPI", "CheckoutOrderAPI\CheckoutOrderAPI.csproj", "{FDE77011-D422-401D-813E-08CC6210484A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7F558BF8-891A-4316-B99F-DBE3AA10D2E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F558BF8-891A-4316-B99F-DBE3AA10D2E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F558BF8-891A-4316-B99F-DBE3AA10D2E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDE77011-D422-401D-813E-08CC6210484A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDE77011-D422-401D-813E-08CC6210484A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDE77011-D422-401D-813E-08CC6210484A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDE77011-D422-401D-813E-08CC6210484A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

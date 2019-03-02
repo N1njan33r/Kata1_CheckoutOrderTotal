@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CheckoutOrderAPI.Models;
 
 namespace CheckoutOrderTotal
 {
@@ -10,10 +11,11 @@ namespace CheckoutOrderTotal
     {
         static void Main(string[] args)
         {
-            foreach (var item in Products.Create())
-            {
-                Console.WriteLine(item.Name);
-            }
+            //foreach (var item in Product.Create())
+            //{
+            //    Console.WriteLine(item.name);
+            //}
+
             Console.ReadKey();
         }
     }
