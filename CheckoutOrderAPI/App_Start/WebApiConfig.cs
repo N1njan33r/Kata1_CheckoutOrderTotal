@@ -19,6 +19,11 @@ namespace CheckoutOrderAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "ItemsApi",
+                routeTemplate: "api/{controller}/{id}/{weight}"
+                );
         }
     }
 }
