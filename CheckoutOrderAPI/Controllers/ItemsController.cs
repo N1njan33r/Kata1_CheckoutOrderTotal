@@ -1,4 +1,5 @@
 ﻿using CheckoutOrderAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -8,7 +9,6 @@ namespace CheckoutOrderAPI.Controllers
 {
     public class ItemsController : ApiController
     {
-        public List<double> checkoutTotal = new List<double>();
         private Item[] items = new Item[]
         {
             new Item { Id = 1, Name = "chicken", Price = 2.99, Eaches = false },
@@ -57,12 +57,14 @@ namespace CheckoutOrderAPI.Controllers
             if (!lineItem.Eaches)
             {
                 // Add item as weighed item with {weight}
-
-                return Ok("By weight.");
+                Scanned scanned = new Scanned(lineItem, weight);
+                Receipt.OrderTotal += Math.Round(scanned.LineTotal, 2);
+                return Ok(Receipt.OrderTotal.ToString());
             }
             else if (lineItem.Eaches)
             {
                 // Add item as eaches item without {weight}
+                weight = 1.00;
                 return Ok("By unit");
             }
             else

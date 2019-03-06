@@ -5,12 +5,16 @@ using System.Web;
 
 namespace CheckoutOrderAPI.Models
 {
-    public class Receipt
+    public static class Receipt
     {
-        public Receipt(Scanned scanned)
-        {
-            //var item = new Item(13, "brick", 1.99, false);
-            //Scanned scanned = new Scanned(item);
-        }
+        public static double OrderTotal { get; set; }
+        public static List<Scanned> ScannedItems { get; set; }
+
+        //public Receipt(Scanned scanned)
+        //{
+        //    //var item = new Item(13, "brick", 1.99, false);
+        //    //Scanned scanned = new Scanned(item);
+            
+        //}
     }
 }
