@@ -17,7 +17,20 @@ namespace CheckoutOrderAPI.Models
 
         public Scanned(Item item, double weight)
         {
+            if (HasMarkdown)
+            {
+                item.Price = Markdown();
+            }
+            if (IsOnSale)
+            {
+
+            }
             LineTotal = item.Price * weight;
+        }
+
+        private double Markdown()
+        {
+            return 1;
         }
     }
 }
