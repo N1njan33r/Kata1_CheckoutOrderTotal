@@ -60,10 +60,14 @@ namespace CheckoutOrderAPI.Controllers
 
                 return Ok("By weight.");
             }
-            else
+            else if (lineItem.Eaches)
             {
                 // Add item as eaches item without {weight}
                 return Ok("By unit");
+            }
+            else
+            {
+                return Ok("Invalid input.");
             }
 
             //return Ok(checkoutTotal.Sum());
