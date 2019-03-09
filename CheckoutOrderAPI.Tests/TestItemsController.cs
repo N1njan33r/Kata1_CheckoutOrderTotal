@@ -69,6 +69,26 @@ namespace CheckoutOrderAPI.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(Math.Round(testItems[0].Price * 1.5, 2), result.Content);
         }
+
+        [TestMethod]
+        public void ScanItemWithMarkdown_ShouldReturnTotal()
+        {
+            Receipt.Clear();
+            //Arrange
+            var testItems = GetTestItems();
+            var controller = new ItemsController(testItems);
+
+            //Act
+            var result = controller.ScanItemWithMarkdown(1, 2.00, 0.99) as OkNegotiatedContentResult<double>;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1.98, result.Content);
+        }
+
+        [TestMethod]
+
+
         #endregion
 
 
