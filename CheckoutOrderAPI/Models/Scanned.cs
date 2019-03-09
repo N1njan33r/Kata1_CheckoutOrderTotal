@@ -19,7 +19,7 @@ namespace CheckoutOrderAPI.Models
         {
             if (HasMarkdown)
             {
-                item.Price = Markdown();
+                
             }
             if (IsOnSale)
             {
@@ -27,10 +27,9 @@ namespace CheckoutOrderAPI.Models
             }
             LineTotal = item.Price * weight;
         }
-
-        private double Markdown()
+        public Scanned(Item item, double weight, double markdown)
         {
-            return 1;
+
         }
     }
 }

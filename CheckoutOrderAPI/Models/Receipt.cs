@@ -9,5 +9,10 @@ namespace CheckoutOrderAPI.Models
     {
         public static double OrderTotal { get; set; }
         public static List<Scanned> ScannedItems { get; set; }
+
+        public static void Clear()
+        {
+            OrderTotal = 0.00;
+        }
     }
 }
