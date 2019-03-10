@@ -11,13 +11,42 @@ namespace CheckoutOrderAPI.Models
         public int Quantity { get; set; }
         public double Weight { get; set; }
         public double LineTotal { get; set; }
-        public bool HasMarkdown { get; set; }
-        public bool IsOnSale { get; set; }
 
-
+        public Scanned(Item item)
+        {
+            if (!Receipt.ScannedItems.Any(x => x.Item.Id == item.Id))
+            {
+                Item = item;
+                Quantity = 1;
+                Receipt.ScannedItems.Add(this);
+            }
+            else
+            {
+                var obj = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id);
+                if (obj != null)
+                {
+                    obj.Quantity++;
+                }
+            }
+            LineTotal = Item.Price * Quantity;
+        }
         public Scanned(Item item, double weight)
         {
-            LineTotal = item.Price * weight;
+            if (!Receipt.ScannedItems.Any(x => x.Item.Id == item.Id))
+            {
+                Item = item;
+                Weight = weight;
+                Receipt.ScannedItems.Add(this);
+            }
+            else
+            {
+                var obj = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id);
+                if (obj != null)
+                {
+                    obj.Weight += Weight;
+                }
+            }
+            LineTotal = Item.Price * Weight;
         }
         public Scanned(Item item, double weight, double markdown)
         {
@@ -28,7 +57,7 @@ namespace CheckoutOrderAPI.Models
         }
         public Scanned(Item item, double weight, int requiredQty, double percentOff)
         {
-
+            LineTotal = item.Price;
         }
     }
 }

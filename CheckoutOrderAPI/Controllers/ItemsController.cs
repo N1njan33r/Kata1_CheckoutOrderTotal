@@ -37,7 +37,8 @@ namespace CheckoutOrderAPI.Controllers
                 return NotFound();
             }
 
-            Receipt.OrderTotal += Math.Round(lineItem.Price, 2);
+            Scanned scanned = new Scanned(lineItem);
+            Receipt.Sum();
             return Ok(Receipt.OrderTotal);
         }
         
@@ -55,7 +56,7 @@ namespace CheckoutOrderAPI.Controllers
                 weight = 1.00;
             }
             Scanned scanned = new Scanned(lineItem, weight);
-            Receipt.OrderTotal += Math.Round(scanned.LineTotal, 2);
+            Receipt.Sum();
             return Ok(Receipt.OrderTotal);
         }
 
