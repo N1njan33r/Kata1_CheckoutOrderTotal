@@ -95,7 +95,7 @@ namespace CheckoutOrderAPI.Tests
             var controller = new ItemsController(testItems);
 
             //Act
-            var result = controller.ScanItemWithMarkdown(2, 999, 0.99) as OkNegotiatedContentResult<double>;
+            var result = controller.ScanItemWithMarkdown(5, 999, 0.99) as OkNegotiatedContentResult<double>;
 
             //Assert
             Assert.IsNotNull(result);
@@ -114,9 +114,9 @@ namespace CheckoutOrderAPI.Tests
             // This will add a total of 5 items to Receipt
             for (int i = 4; i > 0; i--)
             {
-                controller.ScanItem(2);
+                controller.ScanItem(5);
             }
-            var result = controller.ScanItemBuyNGetMAtX(2, 1.00, 2, 50, 2) as OkNegotiatedContentResult<double>;
+            var result = controller.ScanItemBuyNGetMAtX(5, 1.00, 2, 50, 2) as OkNegotiatedContentResult<double>;
 
             //Assert
             Assert.IsNotNull(result);
@@ -135,9 +135,9 @@ namespace CheckoutOrderAPI.Tests
             // This will add a total of 5 items to Receipt
             for (int i = 4; i > 0; i--)
             {
-                controller.ScanItem(2);
+                controller.ScanItem(5);
             }
-            var result = controller.ScanItemWithSetPriceForQty(2, 1.00, 2, 2.00) as OkNegotiatedContentResult<double>;
+            var result = controller.ScanItemWithSetPriceForQty(5, 1.00, 2, 2.00) as OkNegotiatedContentResult<double>;
 
             //Assert
             Assert.IsNotNull(result);
@@ -156,9 +156,9 @@ namespace CheckoutOrderAPI.Tests
             // This will add a total of 8 items to Receipt
             for (int i = 7; i > 0; i--)
             {
-                controller.ScanItem(2);
+                controller.ScanItem(5);
             }
-            var result = controller.ScanItemBuyNGetMAtXWithLimit(2, 1.00, 2, 50, 2, 1) as OkNegotiatedContentResult<double>;
+            var result = controller.ScanItemBuyNGetMAtXWithLimit(5, 1.00, 2, 50, 2, 1) as OkNegotiatedContentResult<double>;
 
             //Assert
             Assert.IsNotNull(result);
@@ -177,13 +177,30 @@ namespace CheckoutOrderAPI.Tests
             // This will add a total of 8 items to Receipt
             for (int i = 7; i > 0; i--)
             {
-                controller.ScanItem(2);
+                controller.ScanItem(5);
             }
-            var result = controller.ScanItemWithSetPriceForQtyWithLimit(2, 1.00, 2, 2.00, 1) as OkNegotiatedContentResult<double>;
+            var result = controller.ScanItemWithSetPriceForQtyWithLimit(5, 1.00, 2, 2.00, 1) as OkNegotiatedContentResult<double>;
 
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(13.94, result.Content);
+        }
+
+        [TestMethod]
+        public void AddItemThenRemoveItem_ShouldReturnZero()
+        {
+            Receipt.Clear();
+            //Arrange
+            var testItems = GetTestItems();
+            var controller = new ItemsController(testItems);
+
+            //Act
+            var result = controller.ScanItem(8) as OkNegotiatedContentResult<double>;
+            result = controller.RemoveItem(8) as OkNegotiatedContentResult<double>;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0.00, result.Content);
         }
 
         #endregion
@@ -191,18 +208,18 @@ namespace CheckoutOrderAPI.Tests
         private List<Item> GetTestItems()
         {
             var testItems = new List<Item>();
-            testItems.Add(new Item { Id = 1, Name = "Demo1", Price = 2.99, Eaches = false });
-            testItems.Add(new Item { Id = 2, Name = "Demo2", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 3, Name = "Demo3", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 4, Name = "Demo4", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 5, Name = "Demo5", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 6, Name = "Demo6", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 7, Name = "Demo7", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 8, Name = "Demo8", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 9, Name = "Demo9", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 10, Name = "Demo10", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 11, Name = "Demo11", Price = 1.99, Eaches = true });
-            testItems.Add(new Item { Id = 12, Name = "Demo12", Price = 1.99, Eaches = true });
+            testItems.Add(new Item { Id = 1, Name = "chicken", Price = 2.99, Eaches = false });
+            testItems.Add(new Item { Id = 2, Name = "beef", Price = 5.49, Eaches = false });
+            testItems.Add(new Item { Id = 3, Name = "pork", Price = 1.99, Eaches = false });
+            testItems.Add(new Item { Id = 4, Name = "shrimp", Price = 5.99, Eaches = false });
+            testItems.Add(new Item { Id = 5, Name = "eggs", Price = 1.99, Eaches = true });
+            testItems.Add(new Item { Id = 6, Name = "butter", Price = 3.19, Eaches = true });
+            testItems.Add(new Item { Id = 7, Name = "cheese", Price = 5.99, Eaches = true });
+            testItems.Add(new Item { Id = 8, Name = "milk", Price = 4.59, Eaches = true });
+            testItems.Add(new Item { Id = 9, Name = "apples", Price = 0.99, Eaches = false });
+            testItems.Add(new Item { Id = 10, Name = "bananas", Price = 0.39, Eaches = false });
+            testItems.Add(new Item { Id = 11, Name = "lemons", Price = 0.69, Eaches = true });
+            testItems.Add(new Item { Id = 12, Name = "limes", Price = 0.50, Eaches = true });
 
             return testItems;
         }

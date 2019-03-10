@@ -130,6 +130,114 @@ namespace CheckoutOrderAPI.Controllers
             return Ok(Receipt.OrderTotal);
         }
 
+        // Remove simple item
+        public IHttpActionResult RemoveItem(int id)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+        // GET: api/Items/GetId?id={id}&weight={weight}
+        public IHttpActionResult RemoveItemEnterWeight(int id, double weight)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+
+            if (lineItem.Eaches)
+            {
+                weight = 1.00;
+            }
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem, weight);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+        // Marked-down
+        public IHttpActionResult RemoveItemWithMarkdown(int id, double weight, double markdown)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+
+            if (lineItem.Eaches)
+            {
+                weight = 1.00;
+            }
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem, weight, markdown);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+        // Buy N items get M at %X off.
+        public IHttpActionResult RemoveItemBuyNGetMAtX(int id, double weight, int requiredQty, double percentOff, int discountedQty)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem, weight, requiredQty, percentOff, discountedQty);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+        public IHttpActionResult RemoveItemBuyNGetMAtXWithLimit(int id, double weight, int requiredQty, double percentOff, int discountedQty, int limit)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem, weight, requiredQty, percentOff, discountedQty, limit);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+        // Buy N items for $X
+        public IHttpActionResult RemoveItemWithSetPriceForQty(int id, double weight, int requiredQty, double setPrice)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem, weight, requiredQty, setPrice);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+        public IHttpActionResult RemoveItemWithSetPriceForQtyWithLimit(int id, double weight, int requiredQty, double setPrice, int limit)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+            Scanned scanned = new Scanned();
+            scanned.Remove(lineItem, weight, requiredQty, setPrice, limit, true);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
 
 
         #endregion
