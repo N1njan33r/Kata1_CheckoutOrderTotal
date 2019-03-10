@@ -71,7 +71,7 @@ namespace CheckoutOrderAPI.Tests
         }
 
         [TestMethod]
-        public void ScanItemWithMarkdown_ShouldReturnTotal()
+        public void ScanItemWithWeightAtMarkdown_ShouldReturnTotal()
         {
             Receipt.Clear();
             //Arrange
@@ -87,7 +87,20 @@ namespace CheckoutOrderAPI.Tests
         }
 
         [TestMethod]
+        public void ScanItemWithEachesAtMarkdown_ShouldReturnTotal()
+        {
+            Receipt.Clear();
+            //Arrange
+            var testItems = GetTestItems();
+            var controller = new ItemsController(testItems);
 
+            //Act
+            var result = controller.ScanItemWithMarkdown(2, 999, 0.99) as OkNegotiatedContentResult<double>;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0.99, result.Content);
+        }
 
         #endregion
 

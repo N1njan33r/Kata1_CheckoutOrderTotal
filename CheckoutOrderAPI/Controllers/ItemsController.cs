@@ -74,7 +74,7 @@ namespace CheckoutOrderAPI.Controllers
                 weight = 1.00;
             }
             Scanned scanned = new Scanned(lineItem, weight, markdown);
-            Receipt.OrderTotal += Math.Round(scanned.LineTotal, 2);
+            Receipt.Sum();
             return Ok(Receipt.OrderTotal);
         }
 
