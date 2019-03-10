@@ -92,6 +92,19 @@ namespace CheckoutOrderAPI.Controllers
             return Ok(Receipt.OrderTotal);
         }
 
+        public IHttpActionResult ScanItemBuyNGetMAtXWithLimit(int id, double weight, int requiredQty, double percentOff, int discountedQty, int limit)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+
+            Scanned scanned = new Scanned(lineItem, weight, requiredQty, percentOff, discountedQty, limit);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
         // Buy N items for $X
         public IHttpActionResult ScanItemWithSetPriceForQty(int id, double weight, int requiredQty, double setPrice)
         {
@@ -104,6 +117,20 @@ namespace CheckoutOrderAPI.Controllers
             Receipt.Sum();
             return Ok(Receipt.OrderTotal);
         }
+
+        public IHttpActionResult ScanItemWithSetPriceForQtyWithLimit(int id, double weight, int requiredQty, double setPrice, int limit)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+            Scanned scanned = new Scanned(lineItem, weight, requiredQty, setPrice, limit, true);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
+
+
 
         #endregion
 

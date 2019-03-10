@@ -146,11 +146,80 @@ namespace CheckoutOrderAPI.Models
 
             var qty = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
 
-
             while (qty >= requiredQty)
             {
                 Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += setPrice;
                 qty -= requiredQty;
+            }
+
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += item.Price * qty;
+        }
+        public Scanned(Item item, double weight, int requiredQty, double percentOff, int discountedQty, int limit)
+        {
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = 0;
+
+            if (!Receipt.ScannedItems.Any(x => x.Item.Id == item.Id))
+            {
+                Item = item;
+                Quantity = 1;
+                Weight = 1.00;
+                Receipt.ScannedItems.Add(this);
+            }
+            else
+            {
+                var obj = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id);
+                if (obj != null)
+                {
+                    obj.Quantity++;
+                }
+            }
+
+            var qty = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
+            int i = 0;
+
+            while (qty >= requiredQty + discountedQty && i < limit)
+            {
+                if (qty % requiredQty <= discountedQty && qty > requiredQty)
+                {
+                    Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = (item.Price * requiredQty) + (item.Price * (percentOff / 100) * discountedQty);
+                    qty -= requiredQty + discountedQty;
+                    i++;
+                }
+                else
+                {
+                    qty--;
+                }
+            }
+
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += item.Price * qty;
+        }
+        public Scanned(Item item, double weight, int requiredQty, double setPrice, int limit, bool setLimit)
+        {
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = 0;
+            if (!Receipt.ScannedItems.Any(x => x.Item.Id == item.Id))
+            {
+                Item = item;
+                Quantity = 1;
+                Weight = 1.00;
+                Receipt.ScannedItems.Add(this);
+            }
+            else
+            {
+                var obj = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id);
+                if (obj != null)
+                {
+                    obj.Quantity++;
+                }
+            }
+
+            var qty = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
+            int i = 0;
+
+            while (qty >= requiredQty && i < limit)
+            {
+                Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += setPrice;
+                qty -= requiredQty;
+                i++;
             }
 
             Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += item.Price * qty;
