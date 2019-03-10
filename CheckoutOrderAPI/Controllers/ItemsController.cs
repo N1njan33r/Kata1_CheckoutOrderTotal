@@ -79,29 +79,31 @@ namespace CheckoutOrderAPI.Controllers
         }
 
         // Buy N items get M at %X off.
-        public IHttpActionResult ScanItemBuyXGetX(int id, double weight, int requiredQty, double percentOff)
+        public IHttpActionResult ScanItemBuyNGetMAtX(int id, double weight, int requiredQty, double percentOff, int discountedQty)
         {
             var lineItem = items.FirstOrDefault((p) => p.Id == id);
             if (lineItem == null)
             {
                 return NotFound();
             }
-            Scanned scanned = new Scanned(lineItem, weight, requiredQty, percentOff);
-            Receipt.OrderTotal += Math.Round(scanned.LineTotal, 2);
+
+            Scanned scanned = new Scanned(lineItem, weight, requiredQty, percentOff, discountedQty);
+            Receipt.Sum();
             return Ok(Receipt.OrderTotal);
         }
 
-        //public IHttpActionResult ScanItemWithSetPriceForQty(int id, int requiredQty, double setPrice)
-        //{
-        //    var lineItem = items.FirstOrDefault((p) => p.Id == id);
-        //    if (lineItem == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Scanned scanned = new Scanned(lineItem, weight);
-        //    Receipt.OrderTotal += Math.Round(scanned.LineTotal, 2);
-        //    return Ok(Receipt.OrderTotal);
-        //}
+        // Buy N items for $X
+        public IHttpActionResult ScanItemWithSetPriceForQty(int id, double weight, int requiredQty, double setPrice)
+        {
+            var lineItem = items.FirstOrDefault((p) => p.Id == id);
+            if (lineItem == null)
+            {
+                return NotFound();
+            }
+            Scanned scanned = new Scanned(lineItem, weight, requiredQty, setPrice);
+            Receipt.Sum();
+            return Ok(Receipt.OrderTotal);
+        }
 
         #endregion
 

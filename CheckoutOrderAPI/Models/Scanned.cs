@@ -28,7 +28,7 @@ namespace CheckoutOrderAPI.Models
                     obj.Quantity++;
                 }
             }
-            LineTotal = Item.Price * Quantity;
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = item.Price * Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
         }
         public Scanned(Item item, double weight)
         {
@@ -47,7 +47,7 @@ namespace CheckoutOrderAPI.Models
                     obj.Weight += Weight;
                 }
             }
-            LineTotal = Item.Price * Weight;
+            LineTotal = item.Price * Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Weight;
         }
         public Scanned(Item item, double weight, double markdown)
         {
@@ -77,21 +77,83 @@ namespace CheckoutOrderAPI.Models
             if (item.Eaches)
             {
                 if (markdown < item.Price)
-                    LineTotal = markdown * Quantity;
+                    Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = markdown * Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
                 else
-                    LineTotal = Item.Price * Quantity;
+                    Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = item.Price * Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
             }
             else
             {
                 if (markdown < item.Price)
-                    LineTotal = markdown * Weight;
+                    Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = markdown * Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Weight;
                 else
-                    LineTotal = Item.Price * Weight;
+                    Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = item.Price * Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Weight;
             }
         }
-        public Scanned(Item item, double weight, int requiredQty, double percentOff)
+        public Scanned(Item item, double weight, int requiredQty, double percentOff, int discountedQty)
         {
-            LineTotal = item.Price;
+            if (!Receipt.ScannedItems.Any(x => x.Item.Id == item.Id))
+            {
+                Item = item;
+                Quantity = 1;
+                Weight = 1.00;
+                Receipt.ScannedItems.Add(this);
+            }
+            else
+            {
+                var obj = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id);
+                if (obj != null)
+                {
+                    obj.Quantity++;
+                }
+            }
+
+            var qty = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
+
+            
+            while (qty >= requiredQty + discountedQty)
+            {
+                if (qty % requiredQty <= discountedQty && qty % requiredQty > 0)
+                {
+                    Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = (item.Price * requiredQty) + (item.Price * (percentOff / 100) * discountedQty);
+                    qty -= requiredQty + discountedQty;
+                }
+                else
+                {
+                    qty--;
+                }
+            }
+
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += item.Price * qty;
+        }
+        public Scanned(Item item, double weight, int requiredQty, double setPrice)
+        {
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal = 0;
+            if (!Receipt.ScannedItems.Any(x => x.Item.Id == item.Id))
+            {
+                Item = item;
+                Quantity = 1;
+                Weight = 1.00;
+                Receipt.ScannedItems.Add(this);
+            }
+            else
+            {
+                var obj = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id);
+                if (obj != null)
+                {
+                    obj.Quantity++;
+                }
+            }
+
+            var qty = Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).Quantity;
+
+
+            while (qty >= requiredQty)
+            {
+                Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += setPrice;
+                qty -= requiredQty;
+            }
+
+            Receipt.ScannedItems.FirstOrDefault(x => x.Item.Id == item.Id).LineTotal += item.Price * qty;
         }
     }
 }

@@ -102,6 +102,48 @@ namespace CheckoutOrderAPI.Tests
             Assert.AreEqual(0.99, result.Content);
         }
 
+        [TestMethod]
+        public void ScanItemBuyNGetMAtX_ShouldReturnTotal()
+        {
+            Receipt.Clear();
+            //Arrange
+            var testItems = GetTestItems();
+            var controller = new ItemsController(testItems);
+
+            //Act
+            // This will add a total of 5 items to Receipt
+            for (int i = 4; i > 0; i--)
+            {
+                controller.ScanItem(2);
+            }
+            var result = controller.ScanItemBuyNGetMAtX(2, 1.00, 2, 50, 2) as OkNegotiatedContentResult<double>;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(7.96, result.Content);
+        }
+
+        [TestMethod]
+        public void ScanItemWithSetPriceForQty_ShouldReturnTotal()
+        {
+            Receipt.Clear();
+            //Arrange
+            var testItems = GetTestItems();
+            var controller = new ItemsController(testItems);
+
+            //Act
+            // This will add a total of 5 items to Receipt
+            for (int i = 4; i > 0; i--)
+            {
+                controller.ScanItem(2);
+            }
+            var result = controller.ScanItemWithSetPriceForQty(2, 1.00, 2, 2.00) as OkNegotiatedContentResult<double>;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5.99, result.Content);
+        }
+
         #endregion
 
 
