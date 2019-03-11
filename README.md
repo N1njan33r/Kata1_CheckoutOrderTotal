@@ -1,14 +1,13 @@
 # Checkout Order Total
 
 This API can be integrated into a standard POS system to accept a unique identifier of a product in the store (as well as other parameters) and return the total price of all added items, pre-tax. This can include marked-down prices, sales, bulk prices, and quantity limits. It also contains methods for removing an item regardless of any special cases, provided those parameters are specified in the API call.
-```
-git clone git@github.com:N1njan33r/Kata1_CheckoutOrderTotal.git
-```
 
 ## Getting Started
 
 'git clone' the repository using the following command:
-
+```
+git clone git@github.com:N1njan33r/Kata1_CheckoutOrderTotal.git
+```
 
 ### Prerequisites
 
@@ -16,11 +15,15 @@ git clone git@github.com:N1njan33r/Kata1_CheckoutOrderTotal.git
 
 ### Installing
 
-Can be deployed as a web service API to be run from a server. 
+1. Open the solution file (CheckoutOrderTotal.sln) in Visual Studio
+2. Navigate to Tools->NuGet Package Manager->Package Manager Console
+3. Click on 'Restore' in the Package Manager Console to refresh all NuGet packages
 
 ## Running the tests
 
-All tests are self-contained and can be run directly from the Visual Studio test suite.
+1. Build the solution (F6)
+2. Navigate to Test->Run->Not Run Tests
+3. To view tests, open the Test Explorer (Test->Windows->Test Explorer)
 
 ### Unit Testing
 
